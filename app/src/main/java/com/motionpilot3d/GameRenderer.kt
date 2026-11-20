@@ -147,9 +147,12 @@ class GameRenderer : GLSurfaceView.Renderer {
                 Matrix.rotateM(model, 0, sin(elapsed + index) * 12f, 0f, 0f, 1f)
                 Matrix.scaleM(model, 0, 0.82f, 0.82f, 0.82f)
                 drawFighter(model, true)
-            } else if (enemy.z < -2f) {
-                enemy.alive = true
-                enemy.z = 20f + index * 3f
+            } else {
+                enemy.z -= dt * 2.5f
+                if (enemy.z < -2f) {
+                    enemy.alive = true
+                    enemy.z = 20f + index * 3f
+                }
             }
         }
 
@@ -164,8 +167,8 @@ class GameRenderer : GLSurfaceView.Renderer {
             shot.z += dt * 19f
             var hit = false
             for (enemy in enemies) {
-                if (enemy.alive && abs(shot.z - enemy.z) < 0.75f &&
-                    abs(shot.x - enemy.x) < 0.95f && abs(shot.y - enemy.y) < 0.85f) {
+                if (enemy.alive && abs(shot.z - enemy.z) < 1.5f &&
+                    abs(shot.x - enemy.x) < 2.0f && abs(shot.y - enemy.y) < 1.5f) {
                     enemy.alive = false
                     score += 100
                     hit = true
